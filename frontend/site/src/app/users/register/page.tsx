@@ -1,14 +1,10 @@
 'use client';
 import React, { useEffect } from 'react';
 import { GoArrowUpRight } from "react-icons/go";
-import { Raleway } from "next/font/google";
 import axios from 'axios';
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-const raleway = Raleway({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
+
 
 function Register() {
   const [fullname, setFullname] = React.useState('');
@@ -27,7 +23,7 @@ async function handleRegister() {
       console.error("Registration error:", error);
     }}
   return (
-    <div className={`${raleway.className} flex items-center justify-center min-h-screen bg-[url('/images/hue.jpg')] bg-cover bg-center`}>
+    <div className=" h-screen flex items-center justify-center min-h-screen bg-[url('/images/hue.jpg')] bg-cover bg-center">
       <div className="backdrop-blur-lg bg-neutral-600/40 rounded-2xl shadow-lg p-8 w-full max-w-md">
         <form onSubmit={handleRegister} className="flex flex-col space-y-4">
           <h2 className={`text-center text-2xl font-thin text-white mb-4`}>Register</h2>
@@ -67,7 +63,7 @@ async function handleRegister() {
               className="px-4 py-2 rounded-2xl border border-gray-400 focus:outline-none focus:ring focus:border-blue-400"
             />
           </div>
-          <div className='font-thin text-[0.9rem] py-1 flex gap-1 items-center justify-center'>Already a user? <h1 className='hover:underline flex justify-center items-center gap-1'>signup <FaExternalLinkAlt className='text-[0.6rem]' /></h1></div>
+          <div className='font-thin text-[0.9rem] py-1 flex gap-1 items-center justify-center'>Already a user? <h1 className='hover:underline flex justify-center items-center gap-[0.2rem]'>signup <FaExternalLinkAlt className='text-[0.5rem]' /></h1></div>
           <button
             type="submit"
             className="flex items-center justify-center gap-2 mt-4 hover:cursor-pointer bg-gradient-to-r from-cyan-400 to-amber-600 hover:ring hover:bg-gradient-to-r hover:from-black/40 hover:to-gray-800 transition duration-350 text-white text-lg font-light py-3 px-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-400"

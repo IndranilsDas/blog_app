@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'knox',
     'Users',
     'corsheaders',
+    'Blogs'
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,12 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Your Next.js frontend
 ]
+
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': [
+    'knox.auth.TokenAuthentication',
+  ],
+}
 
 ROOT_URLCONF = 'practice.urls'
 
@@ -121,7 +129,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = 'static/'
 
 # Default primary key field type
