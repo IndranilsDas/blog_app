@@ -25,6 +25,7 @@ class UsersReg(viewsets.ModelViewSet):
             queryset = queryset.filter(id=id)
         return queryset
     def create(self, request, *args, **kwargs):
+        print(self.request.data)
         serializer = self.get_serializer(data=request.data)
         print("serializer : ",type(serializer))
         serializer.is_valid(raise_exception=True)

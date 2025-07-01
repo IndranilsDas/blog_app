@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 djangorestframework = "*"
 django-cors-headers = "*"
-pillow = "*"
 django-rest-knox = "*"
+pillow = "*"
 
 [dev-packages]
 
