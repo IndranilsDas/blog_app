@@ -100,7 +100,7 @@ function Home() {
               </div>
             </div>
             <div className='w-2/7 flex justify-end items-center pl-4'>
-              <img src={blog.image} alt={blog.title} className="h-32 rounded object-cover" />
+              <img src={blog.image} alt={blog.title} className="h-32 w-full object-cover max-sm:h-16 max-sm:w-full md:h-32" />
             </div>
           </div>
         ))}
