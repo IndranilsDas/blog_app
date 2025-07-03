@@ -11,6 +11,7 @@ class UserAuthentication(TokenAuthentication):
         """
         try:
             auth_token = AuthToken.objects.get(token_key=token)
+            print("get_user function, user",auth_token.user.username)
             return auth_token.user
         except AuthToken.DoesNotExist:
             return None
@@ -23,5 +24,6 @@ class UserAuthentication(TokenAuthentication):
             print(request.headers['Authorization'][6:][:15])
             token = request.headers['Authorization'][6:][:15]
             user = self.get_user_from_token(token)
+            print("user and token",user, token)
             return user, token
         return None, None
