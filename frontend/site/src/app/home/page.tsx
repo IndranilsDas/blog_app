@@ -68,20 +68,20 @@ function Home() {
 
       {/* Main content area */}
       <div
-        className="pt-16 pb-6 px-4 flex flex-col transition-all duration-300"
+        className="pt-16 pb-6 px-4 flex transition-all duration-300 justify-between"
         style={{
           width: isDrawerOpen ? "calc(100% - 13rem)" : "calc(100% - 4rem)",
           marginLeft: isDrawerOpen ? "13rem" : "4rem",
         }}
-      >
+      ><div className='flex flex-col justify-center w-6/7'>
         {blogs.map((blog) => (
           <div
             key={blog.id}
-            className="hover:bg-zinc-300/40 transition duration-300 hover:cursor-pointer flex rounded-xl px-3 py-4 border-b-[0.15px] w-full max-w-4xl"
+            className="hover:bg-zinc-300/40 transition duration-300 hover:cursor-pointer flex rounded-xl px-3 py-4 border-b-[0.15px] max-w-4xl"
           >
             <div className='flex flex-col w-5/7'>
               <div className='flex items-center gap-1 text-sm font-light text-black'>
-                <span className='flex gap-1 my-2 justify-center items-center px-2 py-1 text-sm font-light rounded-full ring text-black'>
+                <span className='flex gap-1 my-2 justify-center items-center px-2 py-1 text-sm font-light rounded-full ring ring-gray-500 text-black'>
                   <img
                   src={blog.profile_image || '/default-profile.png'}
                   alt={blog.author_name}
@@ -89,11 +89,11 @@ function Home() {
                 />{blog.author_name}
                 </span>
               </div>
-              <span className='flex gap-2 items-center font-light text-sm text-gray-900'><ImCalendar className='h-4'/>{blog.created}</span>
+              <span className='flex gap-1 items-center font-light text-sm text-gray-900'><ImCalendar className='h-3'/>{blog.created}</span>
               <h2 className="text-[1.6rem] font-extrabold text-black mb-1 truncate">{blog.title}</h2>
               <p className="text-lg text-gray-400 truncate h-6">'{blog.tagline}'</p>
               <div className='flex justify-start '>
-                <span className='flex items-center text-xl text-gray-700 gap-2 mt-2 py-2 px-2 rounded-full backdrop-blur-xl bg-gray-200/50'>
+                <span className='flex items-center font-semibold text-xl text-gray-600 gap-2 mt-2 py-2 px-2 rounded-full backdrop-blur-xl bg-gray-200/50'>
                 <IoHeartOutline className='h-5 w-5'/> {blog.likes}<h1 className='h-full border-r border-gray-400'/>
                 <IoHeartDislikeOutline className='h-5 w-5'/>  {blog.dislikes}
                 </span>
@@ -104,6 +104,10 @@ function Home() {
             </div>
           </div>
         ))}
+        </div>
+        <div className='flex flex-col h-full w-3/7 bg-gray-400/30'>
+         featured
+        </div>
       </div>
     </div>
   )
