@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Blogs.models import Blog
+from Blogs.models import *
 from .models import Reaction
 class BlogSerializer(serializers.ModelSerializer):
     author_name = serializers.SerializerMethodField()
@@ -20,10 +20,13 @@ class BlogSerializer(serializers.ModelSerializer):
     
     def get_reactions(self, obj):
         obj.reactions.all()
+
     def get_likes(self, obj):
         return obj.reactions.filter(type='like').count()
+    
     def get_dislikes(self, obj):
-        return obj.reactions.filter(type='dislike').count()    
+        return obj.reactions.filter(type='dislike').count()
+        
     def create(self, validated_data):
         blog = Blog.objects.create(**validated_data)
         return blog
@@ -39,4 +42,7 @@ class ReactionSerializer(serializers.ModelSerializer):
         model = Reaction
         fields = ['type']    
 
-    
+class SpacesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spaces
+        fields = "__all__"

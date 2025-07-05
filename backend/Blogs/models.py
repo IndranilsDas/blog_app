@@ -14,12 +14,31 @@ class Blog(models.Model):
 
 class Reaction(models.Model):
     class ReactionType(models.TextChoices):
-        LIKE = 'like', 'Like'
+        LIKE    = 'like', 'Like'
         DISLIKE = 'dislike', 'Dislike'
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='reactions')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    type = models.CharField(max_length = 10, choices=ReactionType.choices)
+
+    blog       = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='reactions')
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    type       = models.CharField(max_length=10, choices=ReactionType.choices)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ['blog', 'user']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['blog', 'user'],
+                name='unique_blog_user_reaction'
+            )
+        ]
+
+class Spaces(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    users = models.ManyToManyField(
+        User,
+        related_name='spaces'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name

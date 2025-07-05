@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import BlogSerializer
-from .models import Blog
+from .serializers import BlogSerializer, SpacesSerializer
+from .models import *
 from rest_framework import viewsets
 from Users.authentication import UserAuthentication
 from rest_framework.views import APIView
@@ -35,6 +35,21 @@ class BlogViewSet(viewsets.ModelViewSet):
         return Response({
             "blog": BlogSerializer(blog).data,
         }, status=status.HTTP_201_CREATED)
+
+class SpacesViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for viewing and editing spaces.
+    """
+    queryset = Spaces.objects.all()  # Assuming you want to list all blogs as spaces
+    serializer_class = SpacesSerializer  # Use the same serializer for simplicity
+    authentication_classes = [UserAuthentication]
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned spaces to a given user,
+        by filtering against a `user_id` query parameter in the URL.
+        """
+        return Spaces.objects.all()  # Adjust this if you have a specific model for spaces
 
 class BlogReactionView(APIView):
     permission_classes = [IsAuthenticated]

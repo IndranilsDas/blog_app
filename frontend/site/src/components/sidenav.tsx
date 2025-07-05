@@ -9,37 +9,40 @@ type SidenavProps = {
   isopen: boolean;
 };
 
-function Sidenav({ isopen }: SidenavProps) {
+export default function Sidenav({ isopen }: SidenavProps) {
   return (
     <div
       className={`
-        h-screen transition-all duration-400 bg-stone-700 border-gray-300
-        flex flex-col justify-start items-center pt-6 px-2
-        ${isopen ? 'w-48 items-start' : 'w-14 items-center'}
+        h-screen bg-stone-700 transition-width duration-300
+        flex flex-col pt-6 px-2
+        ${isopen ? 'w-48' : 'w-14'}
       `}
     >
-      <div className="flex flex-col gap-2 w-full items-center" style={{alignItems:'flex-start'}}>
-        
-        {/* Home */}
-        <button className={`flex items-center gap-2 text-white w-full hover:bg-stone-500 hover:text-white transition duration-200 p-1 rounded overflow-hidden`}>
-          <FaHome className='text-2xl text-white' />
-          {isopen && <span className="text-sm whitespace-nowrap">Home</span>}
+      {[
+        { icon: <FaHome />, label: 'Home' },
+        { icon: <FaRegCompass />, label: 'Explore' },
+        { icon: <HiOutlineUsers />, label: 'Following' },
+      ].map(({ icon, label }) => (
+        <button
+          key={label}
+          className="
+            flex items-center gap-2 text-white
+            w-full p-2 rounded transition-colors duration-200
+            hover:bg-stone-500
+          "
+        >
+          <span className="text-2xl">{icon}</span>
+          <span
+            className={`
+              overflow-hidden whitespace-nowrap
+              transition-all duration-300
+              ${isopen ? 'opacity-100 w-auto ml-2' : 'opacity-0 w-0 ml-0'}
+            `}
+          >
+            {label}
+          </span>
         </button>
-
-        {/* Explore */}
-        <button className={`flex items-center gap-2 text-white w-full hover:bg-stone-500 hover:text-white transition duration-200 p-1 rounded overflow-hidden`}>
-          <FaRegCompass className='text-2xl text-white'/>
-          {isopen && <span className="text-sm whitespace-nowrap">Explore</span>}
-        </button>
-
-        {/* Following */}
-        <button className={`flex items-center gap-2 text-white w-full hover:bg-stone-500 hover:text-white transition duration-200 p-1 rounded overflow-hidden`}>
-          <HiOutlineUsers className='text-2xl text-white' />
-          {isopen && <span className="text-sm whitespace-nowrap">Following</span>}
-        </button>
-      </div>
+      ))}
     </div>
   );
 }
-
-export default Sidenav;

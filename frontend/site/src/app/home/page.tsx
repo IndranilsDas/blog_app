@@ -23,12 +23,25 @@ type Blog = {
   content: string
 }
 
+type  Space ={
+  id: number
+  name: string
+  description: string
+  image: string
+  users: any[]
+  created_at: string
+}
+
 const BACKEND_URL = 'http://127.0.0.1:8000'
 
 function Home() {
   const [blogs, setBlogs] = useState<Blog[]>([])
+  const [spaces, setSpaces] = useState<Space[]>([])
   const token = useAuth()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isFeed, setIsFeed] = useState(false)
+  const [isFeatured, setIsFeatured] = useState(false)
+  const [isFollowing, setIsFollowing] = useState(false)
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -37,12 +50,10 @@ function Home() {
           console.error('No token found, please log in first.')
           return
         }
-        const response = await axios.get(`${BACKEND_URL}/blogs/your_blogs/`, {
+        const response = await axios.get(`${BACKEND_URL}/blogs/all_blogs`, {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Token ${token}`
-          }
-        })
+            "Authorization": `Token ${token}`}})
         setBlogs(response.data)
       } catch (error) {
         console.error('Failed to fetch blogs:', error)
@@ -51,6 +62,28 @@ function Home() {
 
     fetchBlogs()
   }, [token])
+
+
+useEffect(() => {
+    const fetchSpaces = async () => {
+      try {
+        if (!token) {
+          console.error('No token found, please log in first.')
+          return
+        }
+        const response = await axios.get(`${BACKEND_URL}/blogs/spaces`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`}})
+        setSpaces(response.data)
+      } catch (error) {
+        console.error('Failed to fetch spaces:', error)
+      }
+    }
+
+    fetchSpaces()
+  }, [token])
+
 
   return (
     <div className="flex w-full min-h-screen bg-white">
@@ -68,12 +101,24 @@ function Home() {
 
       {/* Main content area */}
       <div
-        className="pt-16 pb-6 px-4 flex transition-all duration-300 justify-between"
+        className="pt-16 pb-6 px-4 flex transition-all duration-300 justify-between gap-2"
         style={{
           width: isDrawerOpen ? "calc(100% - 13rem)" : "calc(100% - 4rem)",
           marginLeft: isDrawerOpen ? "13rem" : "4rem",
         }}
-      ><div className='flex flex-col justify-center w-6/7'>
+      >
+        <div className='flex flex-col justify-center w-6/7'>
+        <div className='flex gap-4 pt-5 border-b'>
+        <div className='relative group text-black pl-4' onClick={()=>setIsFeed(true)}>Feed
+        <h1 className={`left-0 bottom-0 pb-2 border-b ${!isFeed ? 'scale-x-0' : 'scale-x-100'}`}></h1></div>
+        
+        <div className='relative group text-black pl-4' onClick={()=>setIsFollowing(true)}>Following
+        <h1 className={`left-0 bottom-0 pb-2 border-b ${!isFollowing ? 'scale-x-0' : 'scale-x-100'}`}></h1></div>
+        
+        <div className='relative group text-black pl-4' onClick={()=>setIsFeatured(true)}>Featured
+        <h1 className={`left-0 bottom-0 pb-2 border-b ${!isFeatured ? 'scale-x-0' : 'scale-x-100'}`}></h1></div>
+
+      </div>
         {blogs.map((blog) => (
           <div
             key={blog.id}
@@ -105,8 +150,14 @@ function Home() {
           </div>
         ))}
         </div>
-        <div className='flex flex-col h-full w-3/7 bg-gray-400/30'>
-         featured
+        <div className='flex flex-col h-full w-3/7 mt-4'>
+            <h1 className='text-black'>more popular spaces:</h1>
+            <div className='flex flex-wrap gap-3 py-4'>
+              {spaces.map((space) => (
+                  <h2 key={space.id} className='text-black mt-2 p-1 px-2 font-light text-sm cursor-pointer bg-gray-200 rounded-full'>{space.name}</h2>
+              ))}
+            
+            </div>
         </div>
       </div>
     </div>
