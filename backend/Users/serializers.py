@@ -27,4 +27,22 @@ class LoginSerializer(serializers.Serializer):
         user = authenticate(**data)
         if user and user.is_active:
             return user
-        raise serializers.ValidationError("Invalid credentials")    
+        raise serializers.ValidationError("Invalid credentials")
+
+class UserFollowingSerializer(serializers.ModelSerializer):
+    followers = serializers.SerializerMethodField()
+    class Meta:
+        model = User.following.through
+        fields = ['user', 'followed_user', 'followed_at', 'followers']
+        read_only_fields = ['followed_at']
+    def get_followers(self, obj):
+        return obj.followed_.count()
+
+    def create(self, validated_data):
+        user_following = User.following.through.objects.create(**validated_data)
+        return user_following
+
+    def validate(self, data):
+        if data['user'] == data['followed_user']:
+            raise serializers.ValidationError("You cannot follow yourself.")
+        return data    

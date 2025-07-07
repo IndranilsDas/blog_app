@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics
-from Users.models import User
-from Users.serializers import UserSerializer, LoginSerializer
+from Users.models import *
+from Users.serializers import UserSerializer, LoginSerializer, UserFollowingSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from knox.models import AuthToken
@@ -48,3 +48,17 @@ class LoginAPI(generics.GenericAPIView):
             "user": UserSerializer(user).data,
             "token": token
         }, status=status.HTTP_200_OK)
+    
+class UserFollwingViewSet(viewsets.ModelViewSet):
+    queryset = UserFollowing.objects.all()
+    serializer_class = UserFollowingSerializer
+    def get_queryset(self):
+        """
+        Optionally restricts the returned user followings to a given user,
+        by filtering against a `user_id` query parameter in the URL.
+        """
+        queryset = UserFollowing.objects.all()
+        user_id = self.request.query_params.get('user_id', None)
+        if user_id is not None:
+            queryset = queryset.filter(user__id=user_id)
+        return queryset

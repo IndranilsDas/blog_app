@@ -101,28 +101,30 @@ useEffect(() => {
 
       {/* Main content area */}
       <div
-        className="pt-16 pb-6 px-4 flex transition-all duration-300 justify-between gap-2"
+        className="pt-[3.75rem] pb-6 px-4 flex transition-all duration-300 justify-between gap-2"
         style={{
           width: isDrawerOpen ? "calc(100% - 13rem)" : "calc(100% - 4rem)",
           marginLeft: isDrawerOpen ? "13rem" : "4rem",
         }}
       >
-        <div className='flex flex-col justify-center w-6/7'>
-        <div className='flex gap-4 pt-5 border-b'>
-        <div className='relative group text-black pl-4' onClick={()=>setIsFeed(true)}>Feed
-        <h1 className={`left-0 bottom-0 pb-2 border-b ${!isFeed ? 'scale-x-0' : 'scale-x-100'}`}></h1></div>
+        <div className='flex flex-col justify-between items-center w-6/7'>
         
-        <div className='relative group text-black pl-4' onClick={()=>setIsFollowing(true)}>Following
-        <h1 className={`left-0 bottom-0 pb-2 border-b ${!isFollowing ? 'scale-x-0' : 'scale-x-100'}`}></h1></div>
+        <div className='flex pt-5 border-b-2 w-full gap-7 pl-4 items-start'>
+       
+        <div className='relative group text-black' onClick={()=>setIsFeed(true)}>Feed
+        <h1 className={`left-0 bottom-0 pb-2 border-b ${isFeed ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
         
-        <div className='relative group text-black pl-4' onClick={()=>setIsFeatured(true)}>Featured
-        <h1 className={`left-0 bottom-0 pb-2 border-b ${!isFeatured ? 'scale-x-0' : 'scale-x-100'}`}></h1></div>
+        <div className='relative group text-black' onClick={()=>setIsFollowing(true)}>Following
+        <h1 className={`left-0 bottom-0 pb-2 border-b ${isFollowing ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
+        
+        <div className='relative group text-black' onClick={()=>setIsFeatured(true)}>Featured
+        <h1 className={`left-0 bottom-0 pb-2 border-b ${isFeatured ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
 
       </div>
         {blogs.map((blog) => (
           <div
             key={blog.id}
-            className="hover:bg-zinc-300/40 transition duration-300 hover:cursor-pointer flex rounded-xl px-3 py-4 border-b-[0.15px] max-w-4xl"
+            className="hover:bg-zinc-300/40 transition duration-300 hover:cursor-pointer flex items-center rounded-xl px-3 py-4 border-b-[0.15px] w-4xl max-w-4xl"
           >
             <div className='flex flex-col w-5/7'>
               <div className='flex items-center gap-1 text-sm font-light text-black'>
@@ -150,8 +152,15 @@ useEffect(() => {
           </div>
         ))}
         </div>
-        <div className='flex flex-col h-full w-3/7 mt-4'>
+        <div className='flex flex-col h-screen pt-4 border-l px-6'>
             <h1 className='text-black'>more popular spaces:</h1>
+            <div className='flex flex-wrap gap-3 py-4'>
+              {spaces.map((space) => (
+                  <h2 key={space.id} className='text-black mt-2 p-1 px-2 font-light text-sm cursor-pointer bg-gray-200 rounded-full'>{space.name}</h2>
+              ))}
+            
+            </div>
+            <h1 className='text-black'>authors:</h1>
             <div className='flex flex-wrap gap-3 py-4'>
               {spaces.map((space) => (
                   <h2 key={space.id} className='text-black mt-2 p-1 px-2 font-light text-sm cursor-pointer bg-gray-200 rounded-full'>{space.name}</h2>

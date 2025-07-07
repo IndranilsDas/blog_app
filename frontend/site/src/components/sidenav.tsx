@@ -26,7 +26,7 @@ export default function Sidenav({ isopen }: SidenavProps) {
         <button
           key={label}
           className="
-            flex items-center gap-2 text-white
+            flex items-center gap-2 text-white 
             w-full p-2 rounded transition-colors duration-200
             hover:bg-stone-500
           "
