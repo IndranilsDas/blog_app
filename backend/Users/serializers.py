@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Users.models import User
+from Users.models import User, UserFollowing
 from django.contrib.auth import authenticate
 
 
@@ -30,19 +30,30 @@ class LoginSerializer(serializers.Serializer):
         raise serializers.ValidationError("Invalid credentials")
 
 class UserFollowingSerializer(serializers.ModelSerializer):
+    followers_count = serializers.SerializerMethodField()
     followers = serializers.SerializerMethodField()
+
     class Meta:
         model = User.following.through
-        fields = ['user', 'followed_user', 'followed_at', 'followers']
-        read_only_fields = ['followed_at']
+        fields = ['user', 'followed_user', 'followed_at', 'followers_count', 'followers']
+        read_only_fields = ['followed_at', 'followers_count', 'followers']
+
+    def get_followers_count(self, obj):
+        # count how many records follow the same followed_user
+        return UserFollowing.objects.filter(followed_user=obj.followed_user).count()
+
     def get_followers(self, obj):
-        return obj.followed_.count()
+        # get the usernames of everyone following this same followed_user
+        return list(
+            UserFollowing.objects
+            .filter(followed_user=obj.followed_user)
+            .values_list('user__username', flat=True)
+        )
 
     def create(self, validated_data):
-        user_following = User.following.through.objects.create(**validated_data)
-        return user_following
+        return UserFollowing.objects.create(**validated_data)
 
     def validate(self, data):
         if data['user'] == data['followed_user']:
             raise serializers.ValidationError("You cannot follow yourself.")
-        return data    
+        return data

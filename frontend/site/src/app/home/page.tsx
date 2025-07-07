@@ -109,15 +109,15 @@ useEffect(() => {
       >
         <div className='flex flex-col justify-between items-center w-6/7'>
         
-        <div className='flex pt-5 border-b-2 w-full gap-7 pl-4 items-start'>
+        <div className='flex pt-5 border-b-2 w-4xl gap-7 pl-4 items-start'>
        
-        <div className='relative group text-black' onClick={()=>setIsFeed(true)}>Feed
+        <div className='relative group text-gray-700 hover:text-black transition duration-150' onClick={()=>setIsFeed(true)}>Feed
         <h1 className={`left-0 bottom-0 pb-2 border-b ${isFeed ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
         
-        <div className='relative group text-black' onClick={()=>setIsFollowing(true)}>Following
+        <div className='relative group text-gray-700 hover:text-black transition duration-150' onClick={()=>setIsFollowing(true)}>Following
         <h1 className={`left-0 bottom-0 pb-2 border-b ${isFollowing ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
         
-        <div className='relative group text-black' onClick={()=>setIsFeatured(true)}>Featured
+        <div className='relative group text-gray-700 hover:text-black transition duration-150' onClick={()=>setIsFeatured(true)}>Featured
         <h1 className={`left-0 bottom-0 pb-2 border-b ${isFeatured ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
 
       </div>
