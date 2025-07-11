@@ -107,20 +107,21 @@ useEffect(() => {
           marginLeft: isDrawerOpen ? "13rem" : "4rem",
         }}
       >
-        <div className='flex flex-col justify-between items-center w-6/7'>
+        <div className='flex flex-col justify-start items-center w-6/7 h-screen'>
         
-        <div className='flex pt-5 border-b-2 w-4xl gap-7 pl-4 items-start'>
+        <div className='flex pt-5 border-b w-4xl gap-7 pl-2 items-start'>
        
         <div className='relative group text-gray-700 hover:text-black transition duration-150' onClick={()=>setIsFeed(true)}>Feed
-        <h1 className={`left-0 bottom-0 pb-2 border-b ${isFeed ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
+        <h1 className={`left-0 bottom-0 pb-2 border-b-2 ${isFeed ? 'scale-x-100 origin-left ease-in-out transition duration-150' : 'scale-x-0'}`}></h1></div>
         
         <div className='relative group text-gray-700 hover:text-black transition duration-150' onClick={()=>setIsFollowing(true)}>Following
-        <h1 className={`left-0 bottom-0 pb-2 border-b ${isFollowing ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
+        <h1 className={`left-0 bottom-0 pb-2 border-b-2 ${isFollowing ? 'scale-x-100 origin-left ease-in-out transition duration-150' : 'scale-x-0'}`}></h1></div>
         
         <div className='relative group text-gray-700 hover:text-black transition duration-150' onClick={()=>setIsFeatured(true)}>Featured
-        <h1 className={`left-0 bottom-0 pb-2 border-b ${isFeatured ? 'scale-x-100' : 'scale-x-0'}`}></h1></div>
+        <h1 className={`left-0 bottom-0 pb-2 border-b-2 ${isFeatured ? 'scale-x-100 origin-left ease-in-out transition duration-150' : 'scale-x-0'}`}></h1></div>
 
       </div>
+      <div className='overflow-y-auto h-full w-full'>
         {blogs.map((blog) => (
           <div
             key={blog.id}
@@ -151,6 +152,7 @@ useEffect(() => {
             </div>
           </div>
         ))}
+        </div>
         </div>
         <div className='flex flex-col h-screen pt-4 border-l px-6'>
             <h1 className='text-black'>more popular spaces:</h1>

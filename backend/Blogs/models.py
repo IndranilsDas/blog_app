@@ -17,9 +17,9 @@ class Reaction(models.Model):
         LIKE    = 'like', 'Like'
         DISLIKE = 'dislike', 'Dislike'
 
-    blog       = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='reactions')
-    user       = models.ForeignKey(User, on_delete=models.CASCADE)
-    type       = models.CharField(max_length=10, choices=ReactionType.choices)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='reactions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.CharField(max_length=10, choices=ReactionType.choices)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
