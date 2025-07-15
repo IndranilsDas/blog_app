@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics
 from Users.models import *
-from Users.serializers import UserSerializer, LoginSerializer, UserFollowingSerializer
+from Users.serializers import UserSerializer, LoginSerializer, UserFollowingSerializer , UserDetailSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from knox.models import AuthToken
+from .authentication import UserAuthentication
 
 # Create your views here.
 class UsersReg(viewsets.ModelViewSet):
@@ -49,6 +50,35 @@ class LoginAPI(generics.GenericAPIView):
             "token": token
         }, status=status.HTTP_200_OK)
     
+class AllUsersViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for viewing all users.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
+    authentication_classes = [UserAuthentication]
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned users to a given user,
+        by filtering against a `id` query parameter in the URL.
+        """
+        queryset = User.objects.all()
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+            print(queryset)
+        return queryset    
+class GetCurrentUserViewSet(generics.RetrieveAPIView):
+    """
+    A view to get the current authenticated user.
+    """
+    serializer_class = UserDetailSerializer
+    authentication_classes = [UserAuthentication]
+
+    def get_object(self):
+        print("inside get_user_object,######################" ,self.request.user)
+        return self.request.user
 class UserFollwingViewSet(viewsets.ModelViewSet):
     queryset = UserFollowing.objects.all()
     serializer_class = UserFollowingSerializer

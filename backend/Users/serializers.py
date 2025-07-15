@@ -18,7 +18,21 @@ class UserSerializer(serializers.ModelSerializer):
         instance.email = validated_data.get('email', instance.email)
         instance.save()
         return instance
-    
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    following_count = serializers.SerializerMethodField()
+    followers_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'fullname', 'email', 'profile_picture', 'bio', 'following_count', 'followers_count']
+        read_only_fields = ['id', 'following_count', 'followers_count']
+
+    def get_following_count(self, obj):
+        return obj.following.count()
+
+    def get_followers_count(self, obj):
+        return obj.followed_by.count()
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()

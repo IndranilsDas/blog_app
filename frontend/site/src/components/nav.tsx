@@ -1,24 +1,83 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { CiSearch } from "react-icons/ci";
 import { IoCreateOutline } from "react-icons/io5";
 import { HiUser } from "react-icons/hi2";
 import { CiUser } from "react-icons/ci";
 import { HiOutlineUser } from "react-icons/hi2";
 import { Macondo_Swash_Caps } from 'next/font/google';
+import { useAuth } from '@/lib/authcontext';
+import axios from 'axios';
 
 const macondo = Macondo_Swash_Caps({
   weight: '400',
   subsets: ['latin'],
   variable: '--font-macondo',
 })
+
+type UserProfile = {
+  id: number;
+  username: string;
+  fullname: string;
+  email: string;
+  profile_picture: string;
+  bio: string;
+  following_count: number;
+  followers_count: number;
+};
+
+const BACKEND_URL = 'http://127.0.0.1:8000'
+
 function Nav() {
+  const token = useAuth();
+  const [user, setUser] = React.useState<UserProfile | null>(null);
+  console.log("User in Nav: ", token);
+  console.log("User_img in Nav: ", user?.profile_picture);
+
+useEffect(() => {
+  if (!token) {
+    console.error('No token found, please log in first.');
+    return;                          // exit early when there’s no token
+  }
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/users/current/`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token.token}`,
+          },
+        }
+      );
+      setUser(response.data);        // save the user once the request succeeds
+    } catch (err) {
+      console.error('Failed to fetch current user', err);
+    }
+  };
+
+  fetchUser();
+}, [token]);                          // effect re‑runs whenever token changes
+
+
+
   return (
     <div className='fixed top-0 left-0 z-10 w-full py-2 flex justify-center items-center backdrop-blur-2xl bg-neutral-800/70'>
-      <div className={`${macondo.className} flex w-2/4 pl-6 text-2xl`}><button className='font-light text-white'>Meraki</button></div>
+      <div className={`${macondo.className} flex w-2/4 pl-6 text-2xl`}><img src='/images/compass.jpg' className='h-1'/><button className='font-light text-white'>Meraki</button></div>
       <div className='flex justify-end pl-10 w-2/4  items-center gap-3 pr-6'>
         <div className='flex justify-center items-center gap-2 outline-none rounded-2xl ring ring-gray-400 bg-gray-600/40 px-3 w-auto py-1 text-white lg:w-auto'><CiSearch/><input className='outline-none placeholder-white' placeholder='Search'></input></div>
         <button className='flex justify-center items-center gap-2 outline-none rounded-2xl ring ring-gray-400 bg-gray-600/40 px-3 py-1 pr-4 text-white'> <IoCreateOutline/>Write</button>
-        <CiUser className='text-4xl ring bg-gray-600/40 ring-gray-400 text-white p-1 rounded-full'/>
+        {user?.profile_picture ? (
+  <img
+    src={user.profile_picture}
+    
+    alt={user.fullname || user.username}
+    className="h-10 w-10 rounded-full object-cover ring bg-gray-600/40 ring-gray-400"
+  />
+) : (
+  <CiUser className="text-4xl ring bg-gray-600/40 ring-gray-400 text-white p-1 rounded-full" />
+)}
+
       </div>
     </div>
   )
