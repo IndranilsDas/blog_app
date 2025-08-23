@@ -4,11 +4,15 @@ import { GoArrowUpRight } from "react-icons/go";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import axios from 'axios';
 import { log } from 'console';
+import { useRouter } from 'next/navigation';
+
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   console.log("Logging in with", username, password);
+  const router = useRouter();
+  
   async function handleLogin(e: React.FormEvent) {
     console.log("inside handleLogin");
     
@@ -24,6 +28,8 @@ function Login() {
       // Save token to localStorage or context
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
+      
+      router.push('/home'); // Redirect to home page after login
       // Redirect or update UI
     } catch (error) {
       console.error("Login error:", error);

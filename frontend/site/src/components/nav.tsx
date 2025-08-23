@@ -7,6 +7,7 @@ import { HiOutlineUser } from "react-icons/hi2";
 import { Macondo_Swash_Caps } from 'next/font/google';
 import { useAuth } from '@/lib/authcontext';
 import axios from 'axios';
+import { IoLogOutOutline } from "react-icons/io5";
 
 const macondo = Macondo_Swash_Caps({
   weight: '400',
@@ -28,14 +29,16 @@ type UserProfile = {
 const BACKEND_URL = 'http://127.0.0.1:8000'
 
 function Nav() {
-  const token = useAuth();
+  const profile = useAuth();
   const [user, setUser] = React.useState<UserProfile | null>(null);
-  console.log("User in Nav: ", token);
+  const [isProfile, setIsProfile] = React.useState(false);
+  console.log("User in Nav: ", profile);
   console.log("User_img in Nav: ", user?.profile_picture);
+  console.log("setIsProfile : ",isProfile)
 
 useEffect(() => {
-  if (!token) {
-    console.error('No token found, please log in first.');
+  if (!profile) {
+    console.error('No token found, please log in first. Navbar');
     return;                          // exit early when there’s no token
   }
 
@@ -46,7 +49,7 @@ useEffect(() => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Token ${token.token}`,
+            Authorization: `Token ${profile.token}`,
           },
         }
       );
@@ -57,7 +60,7 @@ useEffect(() => {
   };
 
   fetchUser();
-}, [token]);                          // effect re‑runs whenever token changes
+}, [profile]);                          // effect re‑runs whenever token changes
 
 
 
@@ -66,16 +69,21 @@ useEffect(() => {
       <div className={`${macondo.className} flex w-2/4 pl-6 text-2xl`}><img src='/images/compass.jpg' className='h-1'/><button className='font-light text-white'>Meraki</button></div>
       <div className='flex justify-end pl-10 w-2/4  items-center gap-3 pr-6'>
         <div className='flex justify-center items-center gap-2 outline-none rounded-2xl ring ring-gray-400 bg-gray-600/40 px-3 w-auto py-1 text-white lg:w-auto'><CiSearch/><input className='outline-none placeholder-white' placeholder='Search'></input></div>
-        <button className='flex justify-center items-center gap-2 outline-none rounded-2xl ring ring-gray-400 bg-gray-600/40 px-3 py-1 pr-4 text-white'> <IoCreateOutline/>Write</button>
+        <button className='flex justify-center items-center gap-2 outline-none rounded-2xl ring ring-black-400 bg-gray-600/40 px-3 py-1 pr-4 text-white'> <IoCreateOutline/>Write</button>
         {user?.profile_picture ? (
+  <div onClick={()=>{setIsProfile(prev => !prev)}}>        
   <img
     src={user.profile_picture}
     
     alt={user.fullname || user.username}
     className="h-10 w-10 rounded-full object-cover ring bg-gray-600/40 ring-gray-400"
-  />
+  />{isProfile && <div className='absolute flex flex-col gap-1 top-12 right-0 shadow-lg rounded-lg p-2 transtion-all duration-500'>
+      <p className='text-md font-semibold text-black rounded py-1 px-3 transition-colors duration-150'>{user?.fullname || user?.username}</p>
+      <h1 className='border-b w-full'/>
+      <div onClick={()=>{profile.logout()}} className='text-md text-black rounded hover:bg-gray-200 hover:cursor-pointer py-1 px-3 flex gap-2 items-center transition-colors duration-150'><h1>logout?</h1> <IoLogOutOutline/></div>
+    </div>}</div>
 ) : (
-  <CiUser className="text-4xl ring bg-gray-600/40 ring-gray-400 text-white p-1 rounded-full" />
+  <CiUser  className="relative text-4xl ring bg-gray-600/40 ring-gray-400 text-white p-1 rounded-full"/>
 )}
 
       </div>

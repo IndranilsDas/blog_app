@@ -16,14 +16,14 @@ async function handleRegister() {
     console.log("inside handleRegister");
     try {
       const response = await axios.post('http://127.0.0.1:8000/users/register/', {
-        fullname: fullname,email:email ,password: password}
+        fullname: fullname,username:email ,password: password}
       );console.log("response : ",response)
     }
     catch (error) {
       console.error("Registration error:", error);
     }}
   return (
-    <div className=" h-screen flex items-center justify-center min-h-screen bg-[url('/images/hue.jpg')] bg-cover bg-center">
+    <div className=" h-screen flex items-center justify-center min-h-screen bg-[url('/images/mushroom.jpg')] bg-cover bg-center">
       <div className="backdrop-blur-lg bg-neutral-600/40 rounded-2xl shadow-lg p-8 w-full max-w-md">
         <form onSubmit={handleRegister} className="flex flex-col space-y-4">
           <h2 className={`text-center text-2xl font-thin text-white mb-4`}>Register</h2>

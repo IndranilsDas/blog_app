@@ -7,6 +7,8 @@ import Sidenav from '@/components/sidenav'
 import { ImCalendar } from "react-icons/im";
 import { IoHeartOutline } from "react-icons/io5";
 import { IoHeartDislikeOutline } from "react-icons/io5";
+import { useRouter } from 'next/navigation'
+
 type Blog = {
   id: number
   author: number
@@ -23,7 +25,7 @@ type Blog = {
   content: string
 }
 
-type  Space ={
+type Space = {
   id: number
   name: string
   description: string
@@ -37,34 +39,40 @@ const BACKEND_URL = 'http://127.0.0.1:8000'
 function Home() {
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [spaces, setSpaces] = useState<Space[]>([])
-  const token = useAuth()
+  const { token, isLoading } = useAuth()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isFeed, setIsFeed] = useState(false)
   const [isFeatured, setIsFeatured] = useState(false)
   const [isFollowing, setIsFollowing] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         if (!token) {
           console.error('No token found, please log in first.')
+          router.replace('/users/login')
           return
         }
         const response = await axios.get(`${BACKEND_URL}/blogs/all_blogs`, {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Token ${token}`}})
+            "Authorization": `Token ${token}`
+          }
+        })
         setBlogs(response.data)
       } catch (error) {
         console.error('Failed to fetch blogs:', error)
       }
     }
 
-    fetchBlogs()
-  }, [token])
+    if (!isLoading) { // ✅ only fetch after auth check is done
+      fetchBlogs()
+    }
+  }, [token, isLoading, router])
 
 
-useEffect(() => {
+  useEffect(() => {
     const fetchSpaces = async () => {
       try {
         if (!token) {
@@ -74,16 +82,29 @@ useEffect(() => {
         const response = await axios.get(`${BACKEND_URL}/blogs/spaces`, {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Token ${token}`}})
+            "Authorization": `Token ${token}`
+          }
+        })
         setSpaces(response.data)
       } catch (error) {
         console.error('Failed to fetch spaces:', error)
       }
     }
 
-    fetchSpaces()
-  }, [token])
+    if (!isLoading) { // ✅ only fetch after auth check is done
+      fetchSpaces()
+    }
+  }, [token, isLoading])
 
+
+  // ✅ Show loading screen until auth finishes checking
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <h1 className="text-lg font-semibold text-gray-700">Loading...</h1>
+      </div>
+    )
+  }
 
   return (
     <div className="flex w-full min-h-screen bg-white">
@@ -92,7 +113,7 @@ useEffect(() => {
 
       {/* Sidebar hover wrapper */}
       <div
-        className="fixed left-0 top-[3.25rem] z-10 h-[calc(100vh-3.75rem)]"
+        className="fixed left-0 top-[3.50rem] z-10 h-[calc(100vh-3.75rem)]"
         onMouseEnter={() => setIsDrawerOpen(true)}
         onMouseLeave={() => setIsDrawerOpen(false)}
       >

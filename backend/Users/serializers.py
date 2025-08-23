@@ -6,10 +6,11 @@ from django.contrib.auth import authenticate
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username","email","password"]
+        fields = ["username","fullname","password"]
         read_only_fields = ['id', 'is_staff', 'is_active']
 
     def create(self, validated_data):
+        print("Creating user with data:", validated_data)
         user = User.objects.create_user(**validated_data)
         return user
 

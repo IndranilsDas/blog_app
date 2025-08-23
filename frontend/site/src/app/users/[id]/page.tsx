@@ -81,15 +81,15 @@ function page() {
         <div className='flex justify-between w-full ring rounded'>
 
           <div className='w-1/5 bg-stone-100 max-[1175px]:w-2/7 py-2 items-center ring flex flex-col gap-4 overflow-y-auto'>
-          <h1 className='text-black text-[1.2rem] font-semibold'>{User?.username}</h1>
+          <div className='flex text-left w-full px-4'><h1 className='text-black text-[1.2rem] px-2 font-semibold ring-stone-600 rounded-full'>{User?.username}</h1></div>
           <img src={User?.profile_picture} className='rounded-full h-60 w-60 max-[545px]:h-25 max-[545px]:w-25 max-[1175px]:h-30 max-[1175px]:w-30'></img>
-          <h1 className='text-black text-[1rem]'>{User?.fullname}</h1>
-          <div className='flex gap-2 items-center max-[1175px]:flex-col'>
-          <div className='flex text-gray-900 text-[1rem] gap-2 items-center'><h1 className='font-semibold text-[1.1rem]'>{User?.followers_count}</h1> Followers</div>
+          <h1 className='text-black text-[1.4rem]'>{User?.fullname}</h1>
+          <div className='flex gap-2 items-center max-[1175px]:flex-col rounded py-1 px-2'>
+          <div className='flex text-black text-[1rem] gap-2 items-center'><h1 className='font-semibold text-[1.1rem]'>{User?.followers_count}</h1> Followers</div>
           <BsSuitDiamondFill className='h-2 w-2 text-gray-900'/>
-          <div className='flex text-gray-900 text-[1rem] gap-2 items-center'><h1 className='font-semibold text-[1.1rem]'>{User?.following_count}</h1> Following</div>
+          <div className='flex text-black text-[1rem] gap-2 items-center'><h1 className='font-semibold text-[1.1rem]'>{User?.following_count}</h1> Following</div>
           </div>
-          <div className='w-full px-4 text-gray-900 text-[0.95rem]'>
+          <div className='w-full px-4 text-gray-900 text-sm'>
             {User?.bio}
           </div>
           </div>
