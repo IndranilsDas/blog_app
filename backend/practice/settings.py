@@ -12,6 +12,17 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+import environ
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+SECRET_KEY = env("DJANGO_SECRET_KEY")
+DEBUG = env("DEBUG")
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost"])
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 AUTH_USER_MODEL = 'Users.User'
@@ -20,10 +31,7 @@ AUTH_USER_MODEL = 'Users.User'
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2)%^s92=!kyj(d&ub_57zs%apnbj@pdnnot-&ltfb4kh#*5^+k'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
