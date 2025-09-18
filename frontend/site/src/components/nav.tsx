@@ -66,17 +66,17 @@ useEffect(() => {
 
   return (
     <div className='fixed top-0 left-0 z-10 w-full py-2 flex justify-center items-center backdrop-blur-2xl bg-neutral-800/70'>
-      <div className={`${macondo.className} flex w-2/4 pl-6 text-2xl`}><img src='/images/compass.jpg' className='h-1'/><button className='font-light text-white'>Meraki</button></div>
+      <div className={`${macondo.className} flex w-2/4 pl-6 text-2xl`}><img src='/images/compass.png' className='h-1'/><button className='font-light text-white'>Meraki</button></div>
       <div className='flex justify-end pl-10 w-2/4  items-center gap-3 pr-6'>
         <div className='flex justify-center items-center gap-2 outline-none rounded-2xl ring ring-gray-400 bg-gray-600/40 px-3 w-auto py-1 text-white lg:w-auto'><CiSearch/><input className='outline-none placeholder-white' placeholder='Search'></input></div>
-        <button className='flex justify-center items-center gap-2 outline-none rounded-2xl ring ring-black-400 bg-gray-600/40 px-3 py-1 pr-4 text-white'> <IoCreateOutline/>Write</button>
+        <button className='flex justify-center items-center gap-2 outline-none rounded-2xl ring ring-black-400 bg-gray-600/40 px-3 py-1 pr-4 text-white'> <IoCreateOutline/>create</button>
         {user?.profile_picture ? (
   <div onClick={()=>{setIsProfile(prev => !prev)}}>        
   <img
     src={user.profile_picture}
     
     alt={user.fullname || user.username}
-    className="h-10 w-10 rounded-full object-cover ring bg-gray-600/40 ring-gray-400"
+    className="h-10 w-10 rounded-full object-cover ring bg-gray-600/40 ring-black"
   />{isProfile && <div className='absolute flex flex-col gap-1 top-12 right-0 shadow-lg rounded-lg p-2 transtion-all duration-500'>
       <p className='text-md font-semibold text-black rounded py-1 px-3 transition-colors duration-150'>{user?.fullname || user?.username}</p>
       <h1 className='border-b w-full'/>

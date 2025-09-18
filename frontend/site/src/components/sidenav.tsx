@@ -4,18 +4,20 @@ import { MdOutlineExplore } from "react-icons/md";
 import { FaRegCompass } from "react-icons/fa6";
 import { HiOutlineUsers } from "react-icons/hi";
 import { FaHome } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
 
 type SidenavProps = {
   isopen: boolean;
 };
 
 export default function Sidenav({ isopen }: SidenavProps) {
+  const router = useRouter()
   return (
     <div
       className={`
         h-screen bg-stone-700 transition-width duration-300
         flex flex-col pt-6 px-2
-        ${isopen ? 'w-48' : 'w-14'}
+        ${isopen ? 'w-52' : 'w-16'}
       `}
     >
       {[
@@ -25,6 +27,7 @@ export default function Sidenav({ isopen }: SidenavProps) {
       ].map(({ icon, label }) => (
         <button
           key={label}
+          onClick={()=>router.push('/home')}
           className="
             flex items-center gap-2 text-white 
             w-full p-2 rounded transition-colors duration-200

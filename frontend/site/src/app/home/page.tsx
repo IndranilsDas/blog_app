@@ -46,6 +46,8 @@ function Home() {
   const [isFollowing, setIsFollowing] = useState(false)
   const router = useRouter()
 
+  const [myReactions, setMyReactions] = useState<Record<number, "like" | "dislike" | null>>({})
+
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
@@ -61,6 +63,8 @@ function Home() {
           }
         })
         setBlogs(response.data)
+        // Optionally initialize myReactions from response.data if backend sends user-specific reaction info.
+        // For now we leave it empty; it will fill as user clicks.
       } catch (error) {
         console.error('Failed to fetch blogs:', error)
       }
@@ -70,7 +74,6 @@ function Home() {
       fetchBlogs()
     }
   }, [token, isLoading, router])
-
 
   useEffect(() => {
     const fetchSpaces = async () => {
@@ -96,6 +99,74 @@ function Home() {
     }
   }, [token, isLoading])
 
+  async function handleReact(blog_id: number, type: "like" | "dislike") { 
+    // Previous reaction & counts for rollback
+    const prevReaction = myReactions[blog_id] ?? null
+    let prevCounts: { likes: number; dislikes: number } | null = null
+
+    // ✅ Optimistic update with toggle/switch logic
+    let nextReaction: "like" | "dislike" | null = prevReaction
+    setBlogs((prevBlogs) =>
+      prevBlogs.map((blog) => {
+        if (blog.id !== blog_id) return blog
+
+        // Keep a snapshot for rollback
+        prevCounts = { likes: blog.likes, dislikes: blog.dislikes }
+
+        let likes = blog.likes
+        let dislikes = blog.dislikes
+
+        if (prevReaction === type) {
+          // Toggle off (same button clicked again)
+          if (type === "like") likes = Math.max(0, likes - 1)
+          else dislikes = Math.max(0, dislikes - 1)
+          nextReaction = null
+        } else {
+          // Switch or set first time
+          if (type === "like") {
+            likes += 1
+            if (prevReaction === "dislike") dislikes = Math.max(0, dislikes - 1)
+          } else {
+            dislikes += 1
+            if (prevReaction === "like") likes = Math.max(0, likes - 1)
+          }
+          nextReaction = type
+        }
+
+        return { ...blog, likes, dislikes }
+      })
+    )
+
+    // Keep local reaction state in sync
+    setMyReactions((r) => ({ ...r, [blog_id]: nextReaction }))
+
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/blogs/react/${blog_id}/`,
+        { type },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Token ${token}`
+          }
+        }
+      )
+      console.log("Response:", response.data)
+      // Optionally: reconcile with server if it returns fresh counts
+      // If your API returns updated counts, you can setBlogs() with those here.
+    } catch (error) {
+      console.error("Error:", error)
+      // ❌ Rollback UI on failure
+      if (prevCounts) {
+        setBlogs((prevBlogs) =>
+          prevBlogs.map((blog) =>
+            blog.id === blog_id ? { ...blog, likes: prevCounts!.likes, dislikes: prevCounts!.dislikes } : blog
+          )
+        )
+      }
+      setMyReactions((r) => ({ ...r, [blog_id]: prevReaction }))
+    }
+  }
 
   // ✅ Show loading screen until auth finishes checking
   if (isLoading) {
@@ -107,13 +178,13 @@ function Home() {
   }
 
   return (
-    <div className="flex w-full min-h-screen bg-white">
+    <div className="flex w-full h-screen overflow-y-hidden">
       {/* Navigation bar stays fixed at top */}
       <Nav />
 
       {/* Sidebar hover wrapper */}
       <div
-        className="fixed left-0 top-[3.50rem] z-10 h-[calc(100vh-3.75rem)]"
+        className="fixed left-0 top-[3.25rem] z-10 h-[calc(100vh-3.75rem)]"
         onMouseEnter={() => setIsDrawerOpen(true)}
         onMouseLeave={() => setIsDrawerOpen(false)}
       >
@@ -122,7 +193,7 @@ function Home() {
 
       {/* Main content area */}
       <div
-        className="pt-[3.75rem] pb-6 px-4 flex transition-all duration-300 justify-between gap-2"
+        className="pt-[3.5rem] pb-6 px-4 bg-white flex transition-all duration-300 justify-between gap-2"
         style={{
           width: isDrawerOpen ? "calc(100% - 13rem)" : "calc(100% - 4rem)",
           marginLeft: isDrawerOpen ? "13rem" : "4rem",
@@ -142,7 +213,7 @@ function Home() {
         <h1 className={`left-0 bottom-0 pb-2 border-b-2 ${isFeatured ? 'scale-x-100 origin-left ease-in-out transition duration-150' : 'scale-x-0'}`}></h1></div>
 
       </div>
-      <div className='overflow-y-auto h-full w-full'>
+      <div className='overflow-y-auto h-[80vh] w-full'>
         {blogs.map((blog) => (
           <div
             key={blog.id}
@@ -163,8 +234,15 @@ function Home() {
               <p className="text-lg text-gray-400 truncate h-6">'{blog.tagline}'</p>
               <div className='flex justify-start '>
                 <span className='flex items-center font-semibold text-xl text-gray-600 gap-2 mt-2 py-2 px-2 rounded-full backdrop-blur-xl bg-gray-200/50'>
-                <IoHeartOutline className='h-5 w-5'/> {blog.likes}<h1 className='h-full border-r border-gray-400'/>
-                <IoHeartDislikeOutline className='h-5 w-5'/>  {blog.dislikes}
+                <IoHeartOutline
+                  onClick={()=>handleReact(blog.id,"like")}
+                  className='h-5 w-5 cursor-pointer'
+                /> {blog.likes}
+                <h1 className='h-full border-r border-gray-400'/>
+                <IoHeartDislikeOutline
+                  onClick={()=>handleReact(blog.id,"dislike")}
+                  className='h-5 w-5 cursor-pointer'
+                />  {blog.dislikes}
                 </span>
               </div>
             </div>
