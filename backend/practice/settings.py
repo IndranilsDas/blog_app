@@ -26,15 +26,13 @@ env = environ.Env(
 SECRET_KEY = 'django-insecure-2)%^s92=!kyj(d&ub_57zs%apnbj@pdnnot-&ltfb4kh#*5^+k'
 DEBUG = True
 
-ALLOWED_HOSTS=['*']
 
-
-#ALLOWED_HOSTS = [
-#    "localhost",
-#    "127.0.0.1",
-#    "blog-app-2-ezgs.onrender.com",
-#    "blog-app-sandy-delta.vercel.app",
-#]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "blog-app-2-ezgs.onrender.com",
+    "blog-app-sandy-delta.vercel.app",
+]
 
 
 CORS_ALLOWED_ORIGINS = [
@@ -54,8 +52,6 @@ AUTH_USER_MODEL = 'Users.User'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
