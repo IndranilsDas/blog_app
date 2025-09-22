@@ -28,6 +28,7 @@ DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://blog-app-2-ezgs.onrender.com/",
     "https://blog-app-sandy-delta.vercel.app/",
 ]
 
