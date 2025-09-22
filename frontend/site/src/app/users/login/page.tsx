@@ -6,6 +6,8 @@ import axios from 'axios';
 import { log } from 'console';
 import { useRouter } from 'next/navigation';
 
+const BASE = "https://blog-app-2-ezgs.onrender.com/"
+
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -18,7 +20,7 @@ function Login() {
     
     e.preventDefault(); // prevent page reload
     try {
-      const response = await axios.post('http://127.0.0.1:8000/users/login/', {
+      const response = await axios.post(`${BASE}users/login/`, {
         username:username,
         password:password,
       });

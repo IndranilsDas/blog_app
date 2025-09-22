@@ -4,7 +4,7 @@ import { GoArrowUpRight } from "react-icons/go";
 import axios from 'axios';
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-
+const BASE = "https://blog-app-2-ezgs.onrender.com/"
 
 function Register() {
   const [fullname, setFullname] = React.useState('');
@@ -15,7 +15,7 @@ function Register() {
 async function handleRegister() {
     console.log("inside handleRegister");
     try {
-      const response = await axios.post('http://127.0.0.1:8000/users/register/', {
+      const response = await axios.post(`${BASE}users/register/`, {
         fullname: fullname,username:email ,password: password}
       );console.log("response : ",response)
     }

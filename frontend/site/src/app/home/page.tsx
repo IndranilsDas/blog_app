@@ -34,7 +34,7 @@ type Space = {
   created_at: string
 }
 
-const BACKEND_URL = 'http://127.0.0.1:8000'
+const BASE = "https://blog-app-2-ezgs.onrender.com/"
 
 function Home() {
   const [blogs, setBlogs] = useState<Blog[]>([])
@@ -56,7 +56,7 @@ function Home() {
           router.replace('/users/login')
           return
         }
-        const response = await axios.get(`${BACKEND_URL}/blogs/all_blogs`, {
+        const response = await axios.get(`${BASE}blogs/all_blogs`, {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Token ${token}`
@@ -82,7 +82,7 @@ function Home() {
           console.error('No token found, please log in first.')
           return
         }
-        const response = await axios.get(`${BACKEND_URL}/blogs/spaces`, {
+        const response = await axios.get(`${BASE}blogs/spaces`, {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Token ${token}`
@@ -142,7 +142,7 @@ function Home() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/blogs/react/${blog_id}/`,
+        `${BASE}blogs/react/${blog_id}/`,
         { type },
         {
           headers: {
