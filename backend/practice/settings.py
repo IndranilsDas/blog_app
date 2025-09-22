@@ -26,9 +26,17 @@ env = environ.Env(
 SECRET_KEY = 'django-insecure-2)%^s92=!kyj(d&ub_57zs%apnbj@pdnnot-&ltfb4kh#*5^+k'
 DEBUG = True
 
+ALLOWED_HOSTS = [
+    "http://localhost:3000",
+    "https://blog-app-2-ezgs.onrender.com/",
+    "blog-app-2-ezgs.onrender.com",
+    "https://blog-app-sandy-delta.vercel.app/",
+]
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://blog-app-2-ezgs.onrender.com/",
+    "blog-app-2-ezgs.onrender.com",
     "https://blog-app-sandy-delta.vercel.app/",
 ]
 
