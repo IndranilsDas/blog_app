@@ -18,9 +18,19 @@ env = environ.Env(
     DEBUG=(bool, False)
 )
 
-SECRET_KEY = env("SECRET_KEY")
-DEBUG = env("DEBUG")
-CORS_ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost"])
+#SECRET_KEY = env("SECRET_KEY")
+#DEBUG = env("DEBUG")
+#CORS_ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost"])
+
+
+SECRET_KEY = 'django-insecure-2)%^s92=!kyj(d&ub_57zs%apnbj@pdnnot-&ltfb4kh#*5^+k'
+DEBUG = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://blog-app-sandy-delta.vercel.app/",
+]
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -63,9 +73,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-#CORS_ALLOWED_ORIGINS = [
-#    "http://localhost:3000",
-#]
+
 
 REST_FRAMEWORK = {
   'DEFAULT_AUTHENTICATION_CLASSES': [

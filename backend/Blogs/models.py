@@ -42,3 +42,5 @@ class Spaces(models.Model):
 
     def __str__(self):
         return self.name
+
+#django-insecure-2)%^s92=!kyj(d&ub_57zs%apnbj@pdnnot-&ltfb4kh#*5^+k
