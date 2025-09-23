@@ -1,3 +1,4 @@
+'use client';
 import React, {useEffect} from 'react'
 import { CiSearch } from "react-icons/ci";
 import { IoCreateOutline } from "react-icons/io5";

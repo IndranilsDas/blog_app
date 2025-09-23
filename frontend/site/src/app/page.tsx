@@ -1,103 +1,65 @@
+'use client';
 import Image from "next/image";
+import { Macondo_Swash_Caps } from "next/font/google";
+import { Raleway } from "next/font/google";
+import { useRouter } from "next/navigation";
+
+const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+export const macondo = Macondo_Swash_Caps({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-macondo',
+})
 
 export default function Home() {
+  const router = useRouter()
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="w-screen min-h-screen flex flex-col bg-[url('/images/strips.jpg')] bg-cover bg-center">
+    <div className="top-0 w-full flex justify-between px-8 py-4">
+      <div className={`${macondo.className} flex text-2xl`}><button className='font-light text-white'>Meraki</button></div>
+      <div className="flex gap-4">
+      <div>
+      <h1 onClick={()=>{router.push('/users/register')}} className="transition duration-200 cursor-pointer hover:backdrop-blur-md hover:bg-gradient-to-r hover:bg-neutral-500/30 border border-gray-400 rounded-lg px-3 py-1">Sign-up</h1>
+      </div>
+      <div>
+      <h1 onClick={()=>{router.push('/users/login')}} className="transition duration-200 cursor-pointer hover:backdrop-blur-md hover:bg-gradient-to-r hover:bg-neutral-500/30 border border-gray-400 rounded-lg px-3 py-1">Login</h1>
+      </div>
+      </div>
+    </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="w-full flex items-center justify-center">
+      <div className="w-[98vw] rounded-lg backdrop-blur-lg bg-neutral-800/30 px-6">
+      <h1 className="text-xl py-10 font-thin"><b className="text-3xl">Meraki Blog app</b> by Indranil Das</h1>
+      <div className="border-b h-[0.5px] border-b-gray-300 w-full"></div>
+      <div>
+        <div className="py-10 flex flex-col gap-4">
+        <h1 className="text-3xl font-light">TechStack</h1>
+        <h1 className="font-thin text-lg">Frontend :</h1>
+        <div className="flex flex-col px-3">
+          <h1 className="font-light">JavaScript/TypeScript</h1>
+          <h1 className="font-light">NextJS</h1>
+          <h1 className="font-light">Tailwind CSS</h1>
+          <h1 className="font-light">HTML5</h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <h1 className="font-thin text-lg">Backend :</h1>
+        <div className="flex flex-col px-3">
+          <h1 className="font-light">Python</h1>
+          <h1 className="font-light">Django REST Framework</h1>
+          <h1 className="font-light">Django REST ORM</h1>
+          <h1 className="font-light">SQLlite</h1>
+        </div>
+        </div>
+      </div>
+
+
+      
+      </div> 
+    </div>
+      
     </div>
   );
 }
