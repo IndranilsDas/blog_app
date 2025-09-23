@@ -18,7 +18,7 @@ const macondo = Macondo_Swash_Caps({
 export default function Home() {
   const router = useRouter()
   return (
-    <div className="w-screen min-h-screen flex flex-col bg-[url('/images/strips.jpg')] bg-cover bg-center">
+    <div className="w-screen min-h-screen flex flex-col bg-[url('/images/strips1.jpg')] bg-cover bg-center">
     <div className="top-0 w-full flex justify-between px-8 py-4">
       <div className={`${macondo.className} flex text-2xl`}><button className='font-light text-white'>Meraki</button></div>
       <div className="flex gap-4">
