@@ -9,7 +9,7 @@ const raleway = Raleway({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-export const macondo = Macondo_Swash_Caps({
+const macondo = Macondo_Swash_Caps({
   weight: '400',
   subsets: ['latin'],
   variable: '--font-macondo',
