@@ -5,6 +5,7 @@ import { FaRegCompass } from "react-icons/fa6";
 import { HiOutlineUsers } from "react-icons/hi";
 import { FaHome } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/authcontext';
 
 type SidenavProps = {
   isopen: boolean;
@@ -12,6 +13,11 @@ type SidenavProps = {
 
 export default function Sidenav({ isopen }: SidenavProps) {
   const router = useRouter()
+  const {token} = useAuth()
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
   return (
     <div
       className={`

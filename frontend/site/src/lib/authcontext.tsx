@@ -25,18 +25,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true); // ✅ start as true
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const GetToken = async() =>{
+      const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
 
     if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+
+      try {
+        setToken(storedToken ?? null);
+        setUser(JSON.parse(storedUser ?? null));
+      } catch (e) {
+        console.log(e, storedToken, storedUser, "token & user authtoken.js")
+      }
     }
 
     setIsLoading(false); // ✅ stop loading after checking localStorage
+    }; GetToken();
   }, []);
 
-  const login = (newToken: string, newUser: User) => {
+  const login = async (newToken: string, newUser: User) => {
     localStorage.setItem('token', newToken);
     localStorage.setItem('user', JSON.stringify(newUser));
     setToken(newToken);

@@ -4,7 +4,10 @@ import { GoArrowUpRight } from "react-icons/go";
 import axios from 'axios';
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-const BASE = "https://blog-app-2-ezgs.onrender.com/"
+const BASE =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000/"
+    : "https://blog-app-2-ezgs.onrender.com/";
 
 function Register() {
   const [fullname, setFullname] = React.useState('');

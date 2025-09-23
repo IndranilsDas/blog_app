@@ -34,7 +34,10 @@ type Space = {
   created_at: string
 }
 
-const BASE = "https://blog-app-2-ezgs.onrender.com/"
+const BASE =
+  process.env.NODE_ENV === "development"
+    ? "http://127.0.0.1:8000"
+    : "https://blog-app-2-ezgs.onrender.com";
 
 function Home() {
   const [blogs, setBlogs] = useState<Blog[]>([])
@@ -45,8 +48,9 @@ function Home() {
   const [isFeatured, setIsFeatured] = useState(false)
   const [isFollowing, setIsFollowing] = useState(false)
   const router = useRouter()
-
+  
   const [myReactions, setMyReactions] = useState<Record<number, "like" | "dislike" | null>>({})
+
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -56,21 +60,19 @@ function Home() {
           router.replace('/users/login')
           return
         }
-        const response = await axios.get(`${BASE}blogs/all_blogs`, {
+        const response = await axios.get(`${BASE}/blogs/all_blogs`, {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Token ${token}`
           }
         })
         setBlogs(response.data)
-        // Optionally initialize myReactions from response.data if backend sends user-specific reaction info.
-        // For now we leave it empty; it will fill as user clicks.
       } catch (error) {
         console.error('Failed to fetch blogs:', error)
       }
     }
 
-    if (!isLoading) { // ✅ only fetch after auth check is done
+    if (!isLoading) {
       fetchBlogs()
     }
   }, [token, isLoading, router])
@@ -82,12 +84,16 @@ function Home() {
           console.error('No token found, please log in first.')
           return
         }
-        const response = await axios.get(`${BASE}blogs/spaces`, {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Token ${token}`
-          }
-        })
+        console.log(token,"TOKEN IN HOME");
+        
+        const response = await axios.get(`${BASE}/blogs/spaces`, {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${token}`
+              }
+            })
+        console.log(response,"SPACES RESPONSE");
+        
         setSpaces(response.data)
       } catch (error) {
         console.error('Failed to fetch spaces:', error)
@@ -142,7 +148,7 @@ function Home() {
 
     try {
       const response = await axios.post(
-        `${BASE}blogs/react/${blog_id}/`,
+        `${BASE}/blogs/react/${blog_id}/`,
         { type },
         {
           headers: {

@@ -5,22 +5,29 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import axios from 'axios';
 import { log } from 'console';
 import { useRouter } from 'next/navigation';
-
-const BASE = "https://blog-app-2-ezgs.onrender.com/"
+import { useAuth } from '@/lib/authcontext';
+const BASE =
+  process.env.NODE_ENV === "development"
+    ? "http://127.0.0.1:8000"
+    : "https://blog-app-2-ezgs.onrender.com";
 
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const {login} = useAuth()
   console.log("Logging in with", username, password);
+  
   const router = useRouter();
   
   async function handleLogin(e: React.FormEvent) {
     console.log("inside handleLogin");
     
-    e.preventDefault(); // prevent page reload
+    e.preventDefault();
     try {
-      const response = await axios.post(`${BASE}users/login/`, {
+      console.log(BASE,"BASE");
+      
+      const response = await axios.post(`${BASE}/users/login/`, {
         username:username,
         password:password,
       });
@@ -28,11 +35,17 @@ function Login() {
       console.log("Login response:", response.data);
       console.log("token : ",response.data.token)
       // Save token to localStorage or context
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+       const userData = {id:response.data.user.id,username:response.data.user.username}
+       
+       try{
+        const loggedIn = login(response.data.token,userData) 
+       }catch(e){console.log(e);
+       }
+
       
-      router.push('/home'); // Redirect to home page after login
-      // Redirect or update UI
+      
+      router.push('/home');
     } catch (error) {
       console.error("Login error:", error);
     }

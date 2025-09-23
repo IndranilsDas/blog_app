@@ -26,7 +26,11 @@ type UserProfile = {
   followers_count: number;
 };
 
-const BACKEND_URL = 'http://127.0.0.1:8000'
+
+const BASE =
+  process.env.NODE_ENV === "development"
+    ? "http://127.0.0.1:8000"
+    : "https://blog-app-2-ezgs.onrender.com";
 
 function Nav() {
   const profile = useAuth();
@@ -45,7 +49,7 @@ useEffect(() => {
   const fetchUser = async () => {
     try {
       const response = await axios.get(
-        `${BACKEND_URL}/users/current/`,
+        `${BASE}/users/current/`,
         {
           headers: {
             'Content-Type': 'application/json',
