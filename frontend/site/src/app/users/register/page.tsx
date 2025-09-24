@@ -3,25 +3,36 @@ import React, { useEffect } from 'react';
 import { GoArrowUpRight } from "react-icons/go";
 import axios from 'axios';
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/authcontext';
 
 const BASE =
   process.env.NODE_ENV === "development"
-    ? "http://localhost:3000/"
-    : "https://blog-app-2-ezgs.onrender.com/";
+    ? "http://127.0.0.1:8000"
+    : "https://blog-app-2-ezgs.onrender.com";
+
+
 
 function Register() {
-  const [fullname, setFullname] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const router = useRouter()
+  const {login} = useAuth()
   //console.log("fullname:",fullname, "email:",email,"password:" ,password);
 
-async function handleRegister() {
+async function handleRegister(e:React.FormEvent) {
+  e.preventDefault();
     console.log("inside handleRegister");
     try {
-      const response = await axios.post(`${BASE}users/register/`, {
-        fullname: fullname,username:email ,password: password}
+      const response = await axios.post(`${BASE}/users/register/`, {
+        username: username,email:email ,password: password}
       );console.log("response : ",response)
-    }
+    try{
+    login(response.data.token,{id:response.data.id,username:response.data.user.username})
+    router.push('/home')
+  }catch(e){console.error(e)}
+  }
     catch (error) {
       console.error("Registration error:", error);
     }}
@@ -32,13 +43,13 @@ async function handleRegister() {
           <h2 className={`text-center text-2xl font-thin text-white mb-4`}>Register</h2>
 
           <div className="flex flex-col">
-            <label htmlFor="fullname" className="text-sm font-light text-white mb-1">Full Name</label>
+            <label htmlFor="username" className="text-sm font-light text-white mb-1"> Username</label>
             <input
-              id="fullname"
+              id="Username"
               type="text"
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
-              placeholder="Full Name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Userame"
               className="px-4 py-2 rounded-2xl border border-gray-400 focus:outline-none focus:ring focus:border-blue-400"
             />
           </div>

@@ -81,14 +81,18 @@ useEffect(() => {
     src={user.profile_picture}
     
     alt={user.fullname || user.username}
-    className="h-10 w-10 rounded-full object-cover ring bg-gray-600/40 ring-black"
+    className="h-10 w-10 rounded-full object-cover"
   />{isProfile && <div className='absolute flex flex-col gap-1 top-12 right-0 shadow-lg rounded-lg p-2 transtion-all duration-500'>
       <p className='text-md font-semibold text-black rounded py-1 px-3 transition-colors duration-150'>{user?.fullname || user?.username}</p>
       <h1 className='border-b w-full'/>
       <div onClick={()=>{profile.logout()}} className='text-md text-black rounded hover:bg-gray-200 hover:cursor-pointer py-1 px-3 flex gap-2 items-center transition-colors duration-150'><h1>logout?</h1> <IoLogOutOutline/></div>
     </div>}</div>
 ) : (
-  <CiUser  className="relative text-4xl ring bg-gray-600/40 ring-gray-400 text-white p-1 rounded-full"/>
+  <button onClick={()=>{setIsProfile(prev => !prev)}}><CiUser  className="relative text-4xl ring bg-gray-600/40 ring-gray-400 text-white p-1 rounded-full"/>{isProfile && <div className='absolute flex flex-col gap-1 top-12 right-0 shadow-lg rounded-lg p-2 transtion-all duration-500'>
+      <p className='text-md font-semibold text-black rounded py-1 px-3 transition-colors duration-150'>{user?.fullname || user?.username}</p>
+      <h1 className='border-b w-full'/>
+      <div onClick={()=>{profile.logout()}} className='text-md text-black rounded hover:bg-gray-200 hover:cursor-pointer py-1 px-3 flex gap-2 items-center transition-colors duration-150'><h1>logout?</h1> <IoLogOutOutline/></div>
+    </div>}</button>
 )}
 
       </div>
